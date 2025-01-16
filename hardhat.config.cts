@@ -23,13 +23,9 @@ import './tasks/esm_fix.cjs'
 // https://github.com/motdotla/dotenv
 dotenv.config({ debug: false })
 
-let real_accounts = undefined
-if (process.env.DEPLOYER_KEY) {
-  real_accounts = [
-    process.env.DEPLOYER_KEY,
-    process.env.OWNER_KEY || process.env.DEPLOYER_KEY,
-  ]
-}
+let real_accounts = [process.env.DEPLOYER_KEY, process.env.OWNER_KEY]
+
+console.log('🚀 ~ real_accounts:', real_accounts)
 
 // circular dependency shared with actions
 export const archivedDeploymentPath = './deployments/archive'
@@ -50,37 +46,47 @@ const config = {
       url: `https://rinkeby.infura.io/v3/${process.env.INFURA_API_KEY}`,
       tags: ['test', 'legacy', 'use_root'],
       chainId: 4,
-      accounts: real_accounts,
+      // accounts: real_accounts,
     },
     ropsten: {
       url: `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`,
       tags: ['test', 'legacy', 'use_root'],
       chainId: 3,
-      accounts: real_accounts,
+      // accounts: real_accounts,
     },
     goerli: {
       url: `https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`,
       tags: ['test', 'legacy', 'use_root'],
       chainId: 5,
-      accounts: real_accounts,
+      // accounts: real_accounts,
     },
     sepolia: {
       url: `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`,
       tags: ['test', 'legacy', 'use_root'],
       chainId: 11155111,
-      accounts: real_accounts,
+      // accounts: real_accounts,
     },
     holesky: {
       url: `https://holesky-rpc.nocturnode.tech`,
       tags: ['test', 'legacy', 'use_root'],
       chainId: 17000,
-      accounts: real_accounts,
+      // accounts: real_accounts,
     },
     mainnet: {
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
       tags: ['legacy', 'use_root'],
       chainId: 1,
-      accounts: real_accounts,
+      // accounts: real_accounts,
+    },
+    custom: {
+      url: `https://rpc-eth.teknix.dev`,
+      tags: ['legacy', 'use_root'],
+      chainId: 398,
+      accounts: [
+        process.env.DEPLOYER_KEY as string,
+        process.env.OWNER_KEY as string,
+      ],
+      // accounts: real_accounts,
     },
   },
   mocha: {},
@@ -129,8 +135,7 @@ const config = {
       default: 0,
     },
     owner: {
-      default: 1,
-      1: '0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7',
+      default: 0,
     },
   },
   external: {

@@ -5,7 +5,7 @@ const func: DeployFunction = async function (hre) {
   const { network, viem } = hre
 
   const { deployer, owner } = await viem.getNamedClients()
-  const publicClient = await viem.getPublicClient()
+  // const publicClient = await viem.getPublicClient()
 
   if (!network.tags.use_root) {
     return true

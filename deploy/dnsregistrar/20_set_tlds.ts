@@ -1,5 +1,6 @@
 import type { DeployFunction } from 'hardhat-deploy/types.js'
 import {
+  defineChain,
   encodeFunctionData,
   namehash,
   parseAbi,
@@ -25,11 +26,30 @@ const multicallAbi = parseAbi([
   'struct Result { bool success; bytes returnData; }',
   'function aggregate(Call[] calldata calls) public payable returns (uint256 blockNumber, bytes[] memory returnData)',
 ])
+export const ceth = /*#__PURE__*/ defineChain({
+  id: 398,
+  name: 'CETH',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'CETH',
+    symbol: 'CETH',
+  },
+  rpcUrls: {
+    default: { http: ['https://rpc-eth.teknix.dev/'] },
+  },
+  blockExplorers: {
+    default: {
+      name: 'CETH Explorer',
+      url: 'https://explorer-eth.teknix.dev',
+    },
+  },
+  testnet: false,
+})
 
 const func: DeployFunction = async function (hre) {
   const { viem, network } = hre
 
-  const publicClient = await viem.getPublicClient()
+  const publicClient = await viem.getPublicClient({ chain: ceth })
   const { deployer } = await viem.getNamedClients()
 
   const registry = await viem.getContract('ENSRegistry')

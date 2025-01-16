@@ -16,7 +16,8 @@
     "pub": "npm publish --access public",
     "prepare": "husky install",
     "wikiCheck": "bun ./scripts/wikiCheck.ts",
-    "postinstall": "npx patch-package"
+    "postinstall": "npx patch-package",
+    "deploy": "NODE_OPTIONS='--experimental-loader ts-node/esm/transpile-only' hardhat --network custom deploy"
   },
   "files": [
     "build",
@@ -40,7 +41,7 @@
     "hardhat": "^2.22.2",
     "hardhat-abi-exporter": "^2.9.0",
     "hardhat-contract-sizer": "^2.6.1",
-    "hardhat-deploy": "^0.12.4",
+    "hardhat-deploy": "^0.14.0",
     "hardhat-gas-reporter": "^1.0.4",
     "husky": "^8.0.0",
     "prettier": "^2.6.2",
@@ -52,22 +53,24 @@
   "dependencies": {
     "@ensdomains/buffer": "^0.1.1",
     "@ensdomains/solsha1": "0.0.3",
+    "@nomicfoundation/hardhat-viem": "^2.0.6",
     "@openzeppelin/contracts": "^4.1.0",
-    "dns-packet": "^5.3.0"
+    "dns-packet": "^5.3.0",
+    "hardhat-viem": "^1.0.0"
   },
   "directories": {
     "test": "test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ensdomains/ens-contracts.git"
+    "url": "git+https://github.com/blockchain-ecosystem/ens-contracts.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ensdomains/ens-contracts/issues"
+    "url": "https://github.com/blockchain-ecosystem/ens-contracts/issues"
   },
-  "homepage": "https://github.com/ensdomains/ens-contracts#readme",
+  "homepage": "https://github.com/blockchain-ecosystem/ens-contracts#readme",
   "volta": {
     "node": "16.20.2"
   }

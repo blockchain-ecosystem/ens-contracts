@@ -2,6 +2,26 @@ import { labelhash, namehash } from 'viem/ens'
 import * as dotenv from 'dotenv'
 import { task } from 'hardhat/config.js'
 import { Address, Hex, hexToBigInt } from 'viem'
+import { defineChain } from 'viem'
+export const ceth = /*#__PURE__*/ defineChain({
+  id: 398,
+  name: 'CETH',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'CETH',
+    symbol: 'CETH',
+  },
+  rpcUrls: {
+    default: { http: ['https://rpc-eth.teknix.dev/'] },
+  },
+  blockExplorers: {
+    default: {
+      name: 'CETH Explorer',
+      url: 'https://explorer-eth.teknix.dev',
+    },
+  },
+  testnet: false,
+})
 
 function getOpenSeaUrl(contract: Address, namehashedname: Hex) {
   const tokenId = hexToBigInt(namehashedname).toString()
@@ -19,7 +39,7 @@ task('seed', 'Creates test subbdomains and wraps them with Namewrapper')
     if (error) throw error
     if (!parsedFile) throw new Error('Failed to parse .env')
 
-    const [deployer] = await hre.viem.getWalletClients()
+    const [deployer] = await hre.viem.getWalletClients({ chain: ceth })
     const CAN_DO_EVERYTHING = 0
     const CANNOT_UNWRAP = 1
     const CANNOT_SET_RESOLVER = 8
@@ -40,7 +60,7 @@ task('seed', 'Creates test subbdomains and wraps them with Namewrapper')
     ) {
       throw 'Set addresses on .env'
     }
-    const publicClient = await hre.viem.getPublicClient()
+    const publicClient = await hre.viem.getPublicClient({ chain: ceth })
     console.log(
       'Account balance:',
       publicClient.getBalance({ address: deployer.account.address }),

@@ -25,6 +25,26 @@ import {
   type Address as viemAddress,
 } from 'viem'
 import type Config from '../hardhat.config.cjs'
+import { defineChain } from 'viem'
+export const ceth = /*#__PURE__*/ defineChain({
+  id: 398,
+  name: 'CETH',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'CETH',
+    symbol: 'CETH',
+  },
+  rpcUrls: {
+    default: { http: ['https://rpc-eth.teknix.dev/'] },
+  },
+  blockExplorers: {
+    default: {
+      name: 'CETH Explorer',
+      url: 'https://explorer-eth.teknix.dev',
+    },
+  },
+  testnet: false,
+})
 
 type ContractTypesMap = Omit<
   OriginalContractTypesMap,
@@ -107,8 +127,8 @@ const getContractOrNull =
     if (!deployment) return null
 
     const client = client_ ?? {
-      public: await hre.viem.getPublicClient(),
-      wallet: await hre.viem.getWalletClients().then(([c]) => c),
+      public: await hre.viem.getPublicClient({ chain: ceth }),
+      wallet: await hre.viem.getWalletClients({ chain: ceth }).then(([c]) => c),
     }
 
     return getViemContract({
@@ -133,12 +153,14 @@ const getContract =
   }
 
 const getNamedClients = (hre: HardhatRuntimeEnvironment) => async () => {
-  const publicClient = await hre.viem.getPublicClient()
+  const publicClient = await hre.viem.getPublicClient({ chain: ceth })
   const namedAccounts = await hre.getNamedAccounts()
   const clients: Record<string, Client> = {}
 
   for (const [name, address] of Object.entries(namedAccounts)) {
-    const namedClient = await hre.viem.getWalletClient(address as viemAddress)
+    const namedClient = await hre.viem.getWalletClient(address as viemAddress, {
+      chain: ceth,
+    })
     clients[name] = {
       public: publicClient,
       wallet: namedClient,
@@ -151,13 +173,14 @@ const getNamedClients = (hre: HardhatRuntimeEnvironment) => async () => {
 }
 
 const getUnnamedClients = (hre: HardhatRuntimeEnvironment) => async () => {
-  const publicClient = await hre.viem.getPublicClient()
+  const publicClient = await hre.viem.getPublicClient({ chain: ceth })
   const unnamedAccounts = await hre.getUnnamedAccounts()
 
   const clients: Client[] = await Promise.all(
     unnamedAccounts.map(async (address) => {
       const unnamedClient = await hre.viem.getWalletClient(
         address as viemAddress,
+        { chain: ceth },
       )
       return {
         public: publicClient,
@@ -173,7 +196,7 @@ const getUnnamedClients = (hre: HardhatRuntimeEnvironment) => async () => {
 
 const waitForTransactionSuccess =
   (hre: HardhatRuntimeEnvironment) => async (hash: Hash) => {
-    const publicClient = await hre.viem.getPublicClient()
+    const publicClient = await hre.viem.getPublicClient({ chain: ceth })
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash })
     if (receipt.status !== 'success')
@@ -189,7 +212,9 @@ const deploy =
     args: any[],
     options?: NewDeployContractConfig,
   ) => {
-    const [defaultWalletClient] = await hre.viem.getWalletClients()
+    const [defaultWalletClient] = await hre.viem.getWalletClients({
+      chain: ceth,
+    })
     const walletClient = options?.client?.wallet ?? defaultWalletClient
 
     const legacyOptions: DeployOptions = {
@@ -228,6 +253,7 @@ const deploy =
     const artifact =
       options?.artifact ?? (await hre.artifacts.readArtifact(contractName))
     const deployHash = await walletClient.deployContract({
+      chain: ceth,
       abi: artifact.abi,
       bytecode: artifact.bytecode as Hex,
       args,

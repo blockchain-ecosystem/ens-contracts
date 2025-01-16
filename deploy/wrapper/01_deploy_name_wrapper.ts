@@ -1,6 +1,7 @@
 import type { DeployFunction } from 'hardhat-deploy/types.js'
 import { namehash, zeroAddress } from 'viem'
 import { getInterfaceId } from '../../test/fixtures/createInterfaceId.js'
+import { ceth } from '../dnsregistrar/20_set_tlds.js'
 
 const func: DeployFunction = async function (hre) {
   const { network, viem } = hre
@@ -21,7 +22,9 @@ const func: DeployFunction = async function (hre) {
   const nameWrapper = await viem.getContract('NameWrapper')
 
   if (owner.address !== deployer.address) {
-    const hash = await nameWrapper.write.transferOwnership([owner.address])
+    const hash = await nameWrapper.write.transferOwnership([owner.address], {
+      chain: ceth,
+    })
     console.log(
       `Transferring ownership of NameWrapper to ${owner.address} (tx: ${hash})...`,
     )
@@ -31,9 +34,10 @@ const func: DeployFunction = async function (hre) {
   // Only attempt to make controller etc changes directly on testnets
   if (network.name === 'mainnet') return
 
-  const addControllerHash = await registrar.write.addController([
-    nameWrapper.address,
-  ])
+  const addControllerHash = await registrar.write.addController(
+    [nameWrapper.address],
+    { chain: ceth },
+  )
   console.log(
     `Adding NameWrapper as controller on registrar (tx: ${addControllerHash})...`,
   )

@@ -10,6 +10,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
+    // "paths": {
+    //   "viem": ["./node_modules/viem/src"],
+    //   "viem/*": ["./node_modules/viem/src/*"]
+    // }
   },
   "include": [
     "./utils/**/*.ts",

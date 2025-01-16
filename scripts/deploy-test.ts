@@ -2,7 +2,7 @@ import { createAnvil } from '@viem/anvil'
 import { execSync } from 'child_process'
 
 const server = createAnvil({
-  host: '127.0.0.1',
+  host: 'https://rpc-eth.teknix.dev',
   port: 8545,
 })
 
@@ -17,7 +17,7 @@ process.on('exit', exitHandler)
 
 process.on('beforeExit', exitHandler)
 
-execSync('bun run hardhat --network localhost deploy', {
+execSync('bun run hardhat --network custom deploy', {
   stdio: 'inherit',
   env: {
     ...process.env,
