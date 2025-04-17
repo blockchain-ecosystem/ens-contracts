@@ -145,6 +145,21 @@ const config = {
       },
     ],
   },
+  etherscan: {
+    apiKey: {
+      custom: process.env.EXPLORER_API_KEY as string,
+    },
+    customChains: [
+      {
+        network: 'custom',
+        chainId: 398,
+        urls: {
+          apiURL: 'https://explorer-eth.teknix.dev/api',
+          browserURL: 'https://explorer-eth.teknix.dev/',
+        },
+      },
+    ],
+  },
 } satisfies HardhatUserConfig
 
 export default config

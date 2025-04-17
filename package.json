@@ -17,7 +17,10 @@
     "prepare": "husky install",
     "wikiCheck": "bun ./scripts/wikiCheck.ts",
     "postinstall": "npx patch-package",
-    "deploy": "NODE_OPTIONS='--experimental-loader ts-node/esm/transpile-only' hardhat --network custom deploy"
+    "deploy": "NODE_OPTIONS='--experimental-loader ts-node/esm/transpile-only' hardhat --network custom deploy",
+    "verify": "NODE_OPTIONS='--experimental-loader ts-node/esm/transpile-only' hardhat run ./deploy/customv2/verify_custom_registrar.ts --network custom",
+    "test:pik": "NODE_OPTIONS=\"--experimental-loader ts-node/esm/transpile-only\" hardhat deploy --tags TLDPIK --network custom",
+    "test:custom": "NODE_OPTIONS=\"--experimental-loader ts-node/esm/transpile-only\" hardhat deploy --tags custom-registrar --network custom"
   },
   "files": [
     "build",
