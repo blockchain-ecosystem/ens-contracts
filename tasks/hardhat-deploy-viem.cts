@@ -27,19 +27,19 @@ import {
 import type Config from '../hardhat.config.cjs'
 import { defineChain } from 'viem'
 export const ceth = /*#__PURE__*/ defineChain({
-  id: 398,
-  name: 'CETH',
+  id: 714,
+  name: 'CBNB',
   nativeCurrency: {
     decimals: 18,
-    name: 'CETH',
-    symbol: 'CETH',
+    name: 'CBNB',
+    symbol: 'CBNB',
   },
   rpcUrls: {
-    default: { http: ['https://rpc-eth.teknix.dev/'] },
+    default: { http: ['http://103.23.90.50:8545/'] },
   },
   blockExplorers: {
     default: {
-      name: 'CETH Explorer',
+      name: 'CBNB Explorer',
       url: 'https://explorer-eth.teknix.dev',
     },
   },

@@ -2,7 +2,7 @@ import { createAnvil } from '@viem/anvil'
 import { execSync } from 'child_process'
 
 const server = createAnvil({
-  host: 'https://rpc-eth.teknix.dev',
+  host: 'http://103.23.90.50:8545',
   port: 8545,
 })
 

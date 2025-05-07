@@ -1,11 +1,12 @@
 import type { DeployFunction } from 'hardhat-deploy/types.js'
 import { labelhash } from 'viem'
+import { ceth } from '../dnsregistrar/20_set_tlds.js'
 
 const func: DeployFunction = async function (hre) {
   const { network, viem } = hre
 
   const { deployer, owner } = await viem.getNamedClients()
-  // const publicClient = await viem.getPublicClient()
+  const publicClient = await viem.getPublicClient({ chain: ceth })
 
   if (!network.tags.use_root) {
     return true

@@ -10,12 +10,13 @@ import dotenv from 'dotenv'
 import 'hardhat-abi-exporter'
 import 'hardhat-contract-sizer'
 import 'hardhat-deploy'
-import { HardhatUserConfig } from 'hardhat/config'
+import { HardhatUserConfig, task } from 'hardhat/config'
 
 import('@ensdomains/hardhat-chai-matchers-viem')
 
 // hardhat actions
 import './tasks/esm_fix.cjs'
+import fs from 'fs'
 
 // Load environment variables from .env file. Suppress warnings using silent
 // if this file is missing. dotenv will never modify any environment variables
@@ -29,6 +30,18 @@ console.log('🚀 ~ real_accounts:', real_accounts)
 
 // circular dependency shared with actions
 export const archivedDeploymentPath = './deployments/archive'
+
+task('verify:export', async (args, hre) => {
+  const artifact = await hre.artifacts.readArtifact('ENSRegistryWithFallback')
+  const buildInfo = await hre.artifacts.getBuildInfo(
+    `${artifact.sourceName}:${artifact.contractName}`,
+  )
+  if (!buildInfo) {
+    throw new Error('Build info not found')
+  }
+  fs.writeFileSync('solc-input.json', JSON.stringify(buildInfo.input, null, 2))
+  console.log('solc-input.json exported')
+})
 
 const config = {
   networks: {
@@ -79,9 +92,9 @@ const config = {
       // accounts: real_accounts,
     },
     custom: {
-      url: `https://rpc-eth.teknix.dev`,
+      url: `http://103.23.90.50:8545`,
       tags: ['legacy', 'use_root'],
-      chainId: 398,
+      chainId: 714,
       accounts: [
         process.env.DEPLOYER_KEY as string,
         process.env.OWNER_KEY as string,
@@ -152,10 +165,10 @@ const config = {
     customChains: [
       {
         network: 'custom',
-        chainId: 398,
+        chainId: 714,
         urls: {
-          apiURL: 'https://explorer-eth.teknix.dev/api',
-          browserURL: 'https://explorer-eth.teknix.dev/',
+          apiURL: 'http://103.23.90.50:8067/api',
+          browserURL: 'http://103.23.90.50:8067/',
         },
       },
     ],

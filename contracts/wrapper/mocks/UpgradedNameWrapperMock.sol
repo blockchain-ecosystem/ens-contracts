@@ -3,13 +3,11 @@ pragma solidity ^0.8.4;
 import {INameWrapperUpgrade} from "../INameWrapperUpgrade.sol";
 import "../../registry/ENS.sol";
 import "../../ethregistrar/IBaseRegistrar.sol";
-import {BytesUtils} from "../../utils/BytesUtils.sol";
+import {NameCoder} from "../../utils/NameCoder.sol";
 
 contract UpgradedNameWrapperMock is INameWrapperUpgrade {
-    using BytesUtils for bytes;
-
     bytes32 private constant ETH_NODE =
-        0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae;
+        0xfdb51f7f56d9b1149db5ce99afcf60dda4416fd6fb8dc0649fec13cd03e1803e;
 
     ENS public immutable ens;
     IBaseRegistrar public immutable registrar;
@@ -36,8 +34,8 @@ contract UpgradedNameWrapperMock is INameWrapperUpgrade {
         address approved,
         bytes calldata extraData
     ) public {
-        (bytes32 labelhash, uint256 offset) = name.readLabel(0);
-        bytes32 parentNode = name.namehash(offset);
+        (bytes32 labelhash, uint256 offset) = NameCoder.readLabel(name, 0);
+        bytes32 parentNode = NameCoder.namehash(name, offset);
         bytes32 node = _makeNode(parentNode, labelhash);
 
         if (parentNode == ETH_NODE) {
