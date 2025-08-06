@@ -10,6 +10,7 @@ import {
   defineChain,
 } from 'viem'
 import { dnsEncodeName } from '../../test/fixtures/dnsEncodeName.js'
+import { ceth } from '../../ceth.js'
 
 // using the Multicall3 contract, which is deployed on pretty much every live chain in existence at 0xcA11bde05977b3631167028862bE2a173976CA11
 // for devnet deployments, the same contract address can be used since we can use the pre-signed deploy transaction
@@ -26,26 +27,6 @@ const multicallAbi = parseAbi([
   'struct Result { bool success; bytes returnData; }',
   'function aggregate(Call[] calldata calls) public payable returns (uint256 blockNumber, bytes[] memory returnData)',
 ])
-
-export const ceth = /*#__PURE__*/ defineChain({
-  id: 714,
-  name: 'CBNB',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'CBNB',
-    symbol: 'CBNB',
-  },
-  rpcUrls: {
-    default: { http: ['http://103.23.90.50:8545/'] },
-  },
-  blockExplorers: {
-    default: {
-      name: 'CBNB Explorer',
-      url: 'https://explorer-eth.teknix.dev',
-    },
-  },
-  testnet: false,
-})
 
 const func: DeployFunction = async function (hre) {
   const { viem, network } = hre

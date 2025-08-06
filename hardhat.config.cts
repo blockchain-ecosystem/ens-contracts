@@ -92,9 +92,9 @@ const config = {
       // accounts: real_accounts,
     },
     custom: {
-      url: `http://103.23.90.50:8545`,
+      url: `http://103.69.98.80:8545`,
       tags: ['legacy', 'use_root'],
-      chainId: 714,
+      chainId: 22988,
       accounts: [
         process.env.DEPLOYER_KEY as string,
         process.env.OWNER_KEY as string,
@@ -165,10 +165,10 @@ const config = {
     customChains: [
       {
         network: 'custom',
-        chainId: 714,
+        chainId: 22988,
         urls: {
-          apiURL: 'http://103.23.90.50:8067/api',
-          browserURL: 'http://103.23.90.50:8067/',
+          apiURL: 'https://explorer.testnet.hii.network/api',
+          browserURL: 'https://explorer.testnet.hii.network/',
         },
       },
     ],

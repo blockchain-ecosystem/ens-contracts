@@ -7,6 +7,6 @@ contract DummyOldResolver {
     }
 
     function name(bytes32) public returns (string memory) {
-        return "test.hi";
+        return "test.eth";
     }
 }

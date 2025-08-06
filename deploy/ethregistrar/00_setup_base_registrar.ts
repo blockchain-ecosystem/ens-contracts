@@ -1,6 +1,6 @@
 import type { DeployFunction } from 'hardhat-deploy/types.js'
 import { labelhash } from 'viem'
-import { ceth } from '../dnsregistrar/20_set_tlds.js'
+import { ceth } from '../../ceth.js'
 
 const func: DeployFunction = async function (hre) {
   const { network, viem } = hre
